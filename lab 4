@@ -1,0 +1,52 @@
+
+from JES import *
+
+ 
+# Modifying pixels within a range
+def bigbenColors():
+  bbpic = makePicture("bigben.jpg")
+  for facex in range(60, 150):
+    for facey in range(235, 300):
+      p = getPixel(bbpic, facex, facey)
+      color = getColor(p)
+      if distance(white, getColor(p)) < 125:
+        setColor(p, green) 
+        
+  # wrap up
+  writePictureTo(bbpic, "bigbenOutput.jpg")
+
+
+
+# XOR simulation
+def XOR():
+  # get inputs and echo them to user 
+  # (don't change these 6 lines)
+  A = int(input("Please enter 1 or 0 for A: "))
+  B = int(input("Please enter 1 or 0 for B: "))
+  print( "A is:  " ) 
+  print( A )
+  print( "B is:  " ) 
+  print( B )
+  
+  # create a blank picture (don't change this)
+  result = makeEmptyPicture(100, 100)
+  
+  # Fix the conditions in the if statements 
+  # below so that they do the following:  
+  # If (A XOR B) is true, the word "TRUE" 
+  # should be added to the result picture.
+  # If (A XOR B) is false, then "FALSE" should 
+  # be added to the result picture.  
+  if (A == 1):
+       addText(result, 0, 20, "TRUE", 30, green)
+  if (A == 0) and (B == 0):
+       addText(result, 0, 20, "FALSE", 30, red)
+
+  # save the results (don't change this)
+  writePictureTo(result, "outputXOR.jpg")
+
+# Function definitions above
+############################
+# Test code below
+
+bigbenColors()
