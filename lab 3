@@ -1,0 +1,90 @@
+from JES import *
+from shrinkGrow import *
+
+# mirrors the source picture horizontally
+def mirrorHorizontal(source):
+  height = getHeight(source)
+  mirrorPoint = height // 2
+  for x in range(0, getWidth(source)):
+    for y in range(mirrorPoint, mirrorPoint*2):
+      topPixel = getPixel(source, x, y)
+      bottomPixel = getPixel(source, x, height - y - 1)
+      color = getColor(topPixel)
+      setColor(bottomPixel, color)
+
+# mirrors the source picture vertically
+def mirrorVertical(source):
+  width = getWidth(source)
+  mirrorPoint = width // 2
+  for y in range(0, getHeight(source)):
+    for x in range(mirrorPoint, mirrorPoint*2):
+      leftPixel = getPixel(source, x, y)
+      rightPixel = getPixel(source, width - x - 1, y)
+      color = getColor(leftPixel)
+      setColor(rightPixel, color) 
+
+# Takes a picture, pic, for input &  
+# forms a new picture consisting of
+# three different sizes of pic  
+# layered on top of each other.
+
+def layer(pic):
+  picture = makePicture(pic)
+  small = shrink(picture)
+  big = grow(picture)
+
+  copyInto(small, picture, (getWidth(picture)//2-getWidth(small)//2), (getHeight(picture)//2-getHeight(small)//2))
+
+  copyInto(picture, big, (getWidth(big)//2-getWidth(picture)//2), (getHeight(big)//2-getHeight(picture)//2))
+  
+  # add your code here
+  # you do not need for loops  
+  
+  writePictureTo(big, "layerOutput.jpg")
+
+
+def mystery (pic):
+  for y in range(0, getHeight(pic)):
+    for x in range(0, getWidth(pic)//2):
+      p = getPixel(pic, x, y)
+      setRed(p, 0)
+      setBlue(p, 255)
+      setGreen(p, 255)
+
+
+def topHalfGreen (pic):
+  for y in range(0, getHeight(pic)//2):
+    for x in range(0, getWidth(pic)):
+      p = getPixel(pic, x, y)
+      setRed(p, 0)
+      setBlue(p, 0)
+      setGreen(p, 255)
+
+def quad1Yellow (pic):
+  for y in range(0, getHeight(pic)//2):
+    for x in range(getWidth(pic)//2, getWidth(pic)):
+      p = getPixel(pic, x, y)
+      setRed(p, 255)
+      setBlue(p, 0)
+      setGreen(p, 255)
+
+def frameIt(pic):
+  myPic = makePicture(pic)
+  width = getWidth(myPic)+80
+  height = getHeight(myPic)+80
+  frame = makeEmptyPicture(width, height, yellow)
+
+  copyInto(myPic, frame, (getWidth(frame)//2-getWidth(myPic)//2),(getHeight(frame)//2-getHeight(myPic)//2))
+
+  writePictureTo(frame, "frameOutput.jpg")
+      
+# Function definitions above
+############################
+# Test code below
+
+#myPic = makePicture("coolDuck.jpg")
+#mirrorHorizontal(myPic)
+#mirrorVertical(myPic)
+#writePictureTo( myPic, "mirrorOutput.jpg")
+
+frameIt("duck.jpg")
