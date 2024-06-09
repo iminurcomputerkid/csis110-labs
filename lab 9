@@ -1,0 +1,139 @@
+from JES import *
+
+# complete this function
+##def soundBoard():
+  
+  
+  
+  
+     
+  
+
+# complete this function  
+##def processOneSound():
+  
+  
+  
+# complete this function
+##def processTwoSounds():
+  
+  # example of how to read in a float for the mix amount
+  # note that it must be converted to a float
+  
+# Don't change this function; it's from a previous lab!
+# This function takes as input a sound object and returns
+# a new sound object which is the reverse of the input.  
+def makeReverse(sound):
+  target = makeEmptySound(getLength(sound))
+  sourceIndex = getLength(sound) - 1
+  for targetIndex in range(0, getLength(target)):
+    sourceValue = getSampleValueAt(sound, sourceIndex)
+    setSampleValueAt(target, targetIndex, sourceValue)
+    sourceIndex = sourceIndex - 1
+  return target
+ 
+# Don't change this function! You wrote a similar function
+# in a previous lab.    
+# This function takes as input two sound objects and 
+# two values that sum to 1.  It returns a new sound 
+# object that is the weighted average of the two 
+# input sounds.
+def makeMix(sound1,sound2,mixValue1,mixValue2):
+  newLength = min(getLength(sound1),getLength(sound2))
+  newSound = makeEmptySound(newLength)
+  for index in range(0,newLength):
+    sample1 = getSampleValueAt(sound1,index)
+    sample2 = getSampleValueAt(sound2,index)
+    newSample = mixValue1*sample1 + mixValue2*sample2
+    setSampleValueAt(newSound,index,newSample)
+  return newSound
+
+# Don't change this function! 
+# It takes as input two sound objects.
+# It returns a new sound which interleaves the
+# two input sounds by taking 3000 samples from the
+# first, then 3000 samples from the second, then
+# another 3000 samples from the first, and so on...
+def makeInterleave(sound1, sound2):
+  minLength = min(getLength(sound1),getLength(sound2))
+  newSound = makeEmptySound(minLength*2)
+  numSegments = minLength // 3000
+  for segment in range(0, numSegments):
+    segment1 = clip(sound1, segment*3000, (segment + 1)*3000)
+    segment2 = clip(sound2, segment*3000, (segment + 1)*3000)
+    copy(segment1, newSound, segment*6000)
+    copy(segment2, newSound, segment*6000 + 3000)  
+  return newSound  
+
+def makeDoubleFreq(sound):
+  lenDoubleFreq = getLength(sound)//2
+  doubleFreq = makeEmptySound(lenDoubleFreq)
+  for k in range(0, lenDoubleFreq): 
+    val = getSampleValueAt(sound, 2*k)
+    setSampleValueAt(doubleFreq, k, val)
+  return doubleFreq
+
+def processOneSound():
+  soundFile = input("Please enter the name of the sound file: ")
+  sound = makeSound( soundFile )
+  revOrDouble = int(input("Please enter 1 for 'reverse' or two'double freq': "))
+  if revOrDouble == 1:
+    rev = makeReverse(sound)
+    newSound = input("Please enter name of output file: ")
+    writeSoundTo(rev, newSound)
+  if revOrDouble == 2:
+   doubSound = makeDoubleFreq(sound)
+   newSound = input("Please enter name of output file: ")
+   writeSoundTo(doubSound, newSound)
+    
+
+  
+             
+def processTwoSound():
+  soundFile1 = input("Please enter the name of the sound file: ")
+  sf1 = makeSound(soundFile1)
+  soundFile2 = input("Please enter the name of the sound file: ")
+  sf2 = makeSound(soundFile2)
+  mixOrLeave = int(input("Please enter 1 for 'mix' or 2 for 'interleave' or 3 for adding sound1 and sound2: "))
+  if mixOrLeave == 1 :
+    mixValue1 = (float(input("Please enter percent of first sound"))/100)
+    mixValue2 = (float(input("Please enter percent of second sound"))/100)
+    result = makeMix(sf1, sf2, mixValue1, mixValue2)
+    newSound = input("Please enter name of output file: ")
+    writeSoundTo(result, newSound)
+  if mixOrLeave == 2:
+    result = makeInterleave(sf1, sf2)
+    newSound = input("Please enter name of output file: ")
+    writeSoundTo(result, newSound)
+  if mixOrLeave == 3:
+    result = AddToghether(sf1, sf2)
+    newSound = input("Please enter name of output file: ")
+    writeSoundTo(result, newSound)
+
+
+def SoundBoard():
+  numSounds = int( input("Please enter number of sounds: ") )
+  if numSounds == 1:
+    processOneSound()
+  if numSounds == 2:
+    processTwoSound()
+  print("Thanks for using Sound Board!")
+
+  
+
+def AddToghether (soundFile1, soundFile2):
+  newSound = makeEmptySound(getLength(soundFile1) + getLength(soundFile2))
+  for index in range(0, getLength(soundFile1)):
+    sample1 = getSampleValueAt(soundFile1, index)
+    setSampleValueAt(newSound, index, sample1)
+  for index in range(getLength(soundFile1), getLength(newSound)):
+    sample2 = getSampleValueAt(soundFile2, index - getLength(soundFile1))
+    setSampleValueAt(newSound, index, sample2)
+  return newSound
+
+# Function definitions above
+############################
+# Test code below
+SoundBoard()
+
+
