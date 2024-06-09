@@ -1,0 +1,30 @@
+from JES import *
+
+def makeLouderSound(sound,start,end):
+  louderSnd = makeEmptySound(getLength(sound))
+  for index in range(start, end):
+    val = getSampleValueAt(sound, index)
+    setSampleValueAt(louderSnd, index, val*4)
+  return louderSnd
+  
+def makeMixedSound(sound1, sound2, weight1, weight2):
+  mixedSnd = makeEmptySound(getLength(sound1))
+  for index in range(getLength(sound1)):
+    val1 = getSampleValueAt(sound1, index)
+    val2 = getSampleValueAt(sound2, index)
+    setSampleValueAt(mixedSnd, index, ((val1*weight1) + (val2*weight2)))
+  return mixedSnd
+  
+def makeReversedSound(sound):
+  reversedSnd = makeEmptySound(getLength(sound))
+  for index in range(getLength(sound)):
+    val = getSampleValueAt(sound, getLength(sound) - index-1)
+    setSampleValueAt(reversedSnd, index, val)
+  return reversedSnd
+# Function definitions above  
+############################
+# Test code below
+
+sound = makeSound("mystery2.wav")
+mystery2 = makeReversedSound(sound)
+writeSoundTo(mystery2, "mystery2Solved.wav")
