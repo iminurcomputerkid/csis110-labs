@@ -1,0 +1,77 @@
+from JES import *
+
+#Julien Niles and Will Bazinet
+
+def increaseVolume(sound):
+  for s in range(0, getLength(sound)):
+    value = getSampleValueAt(sound, s)
+    if value > 0:
+      setSampleValueAt(sound, s, value*2)
+    elif value < 0:
+      setSampleValueAt(sound, s, -32000)
+    
+    
+
+def sentence():
+  s1 = makeSound( "sentence1.wav" )
+  s2 = makeSound( "sentence2.wav")
+  s1w1 = clip(s1, 54155, 60042)
+  s2w2 = clip(s2, 20462, 28753)
+  s1w3 = clip(s1, 69766, 76205)
+  s2w4 = clip(s2, 35897, 41256)
+  combo = makeEmptySound(getLength(s1w1) + getLength(s2w2) + getLength(s1w3) + getLength(s2w4), 22050)
+  copy(s1w1, combo, 0)
+  copy(s2w2, combo, getLength(s1w1))
+  copy(s1w3, combo, getLength(s2w2) + getLength(s1w1))
+  copy(s2w4 , combo, getLength(s2w2) + getLength(s1w1) + getLength(s1w3))
+  writeSoundTo(combo,"comboSentence.wav")
+
+# Function definitions above
+
+# Test code below
+
+def clipper ():
+  s = makeSound("sentence1.wav", )
+  slw2 = clip(s, 60042, 69766)
+  writeSoundTo(slw2, "sen1word2.wav")
+
+clipper()
+
+def copies ():
+  g = makeSound("gettysburg10.wav")
+  s = makeSound("sentence1.wav")
+  s1w2 = clip(s, 60042, 69766)
+  copy(s1w2, g, getLength(g)//2)
+  writeSoundTo(g,"copyOutput.wav")
+
+
+
+
+
+
+
+
+
+
+
+def split ():
+  g = makeSound("gettysburg10.wav")
+  for s in range(0, getLength(g)//4):
+  
+    setSampleValueAt(g, s, getSampleValueAt(g, s) // 10)
+       
+  for s in range(getLength(g)//4, getLength(g)//2):
+    setSampleValueAt(g, s, getSampleValueAt(g, s) * 4)
+
+  for s in range(getLength(g)//2, getLength(g)//2 + getLength(g)//4):
+    setSampleValueAt(g, s, getSampleValueAt(g, s) // 10)
+  
+  for s in range(getLength(g)//2 + getLength(g)//4, getLength(g)):
+    setSampleValueAt(g, s, getSampleValueAt(g, s) * 4)
+  writeSoundTo(g, "changingVolume.wav")
+
+split()
+
+copies()
+
+sentence()
