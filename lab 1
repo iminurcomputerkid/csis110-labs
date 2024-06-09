@@ -1,0 +1,20 @@
+from JES import *
+#Function addFace take two inputs (A file name and a color for the pupil)
+def addFace(  fileName,  pupil  ) :
+  myPic = makePicture( fileName )
+  print( getWidth(myPic) )
+  print( getHeight(myPic) )
+  addOvalFilled(myPic,  50,  60,  30,  50,  black)
+  addOvalFilled(myPic,  60,  70,  15,  25,  pupil)
+  addOvalFilled(myPic,  125,  60,  30,  50,  black)
+  addOvalFilled(myPic,  135,  70,  15,  25,  pupil)
+  writePictureTo(myPic, "output.jpg")
+
+def fun1( picture ) : 
+  for p in getPixels (picture) :
+    value = getRed (p)
+    setRed (p,  value/2)           
+
+myPic = makePicture ( "cat.jpg" )
+fun1 (myPic)
+writePictureTo (myPic,  "fun1Results.jpg"  )
