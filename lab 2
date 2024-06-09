@@ -1,0 +1,65 @@
+from JES import *
+
+# Lab 2 starter code
+# Fall 2023
+#
+# Functions go at the top
+# Test code goes at the bottom
+
+def lab2Fun1(picture):
+  for px in getPixels(picture):
+    color = getColor(px)
+    color = makeDarker(color)
+    setColor(px, color)
+   
+def lab2Fun2(picture):
+  for px in getPixels(picture):
+    red = getRed(px)
+    green = getGreen(px)
+    blue = getBlue(px)
+    newColor = makeColor(255-red, 255-green, 255-blue)
+    setColor(px, newColor)
+    
+#Makes the image a negative grayscale
+def negativeGrayScale(  picture  ):
+  for p in getPixels(  picture ):
+    intensity  =  (getRed(p)  +  getGreen(p)  +  getBlue(p))/3
+    grayColor  =  makeColor(  intensity,  intensity,  intensity  )
+    setColor(  p,  grayColor  )
+  for px in getPixels(picture):
+    red = getRed(px)
+    green = getGreen(px)
+    blue = getBlue(px)
+    newColor = makeColor(255-red, 255-green, 255-blue)
+    setColor(px, newColor)
+
+
+
+
+def clearRed(  picture  ):
+   for px in getPixels(  picture  ):
+    setRed(px,  0)
+
+def increaseBlue(  picture  ):
+  for px in getPixels(  picture  ):
+    setBlue(px,  255)
+
+def negateGreen(  picture  ):
+  for px in getPixels(  picture  ):
+    setGreen(px,  205)
+
+def mangle(picture):
+  for px in getPixels(picture):
+    setRed(px, 0)
+  setBlue(px, 255)
+  setGreen(px, -255)
+# Function definitions above
+############################
+# Test code below
+
+myPic  =  makePicture(  "bird.jpg"  )
+
+increaseBlue(  myPic  )
+negateGreen(  myPic  )
+writePictureTo(  myPic,  "noRed.jpg"  )
+
