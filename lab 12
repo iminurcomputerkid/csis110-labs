@@ -1,0 +1,51 @@
+#import requests
+from JES import *
+
+
+# Takes as input two pictures, myPic and secretPic, both
+# of the same size.  It modifies myPic so that it encodes
+# secretPic using the steganography algorithm described
+# in the lab instructions.
+def encode(myPic, secretPic):
+  # Step 1: make all red pixels EVEN in myPic
+  for px in getPixels(myPic):
+    # Using modulo (remainder) operator to test oddness
+    if (getRed(px) % 2) == 1:
+      setRed(px, getRed(px) - 1)
+  # Step 2: wherever there's a blackish pixel in secretPic
+  # make the red value ODD in the myPic pixel
+  for x in range(0,getWidth(myPic)):
+    for y in range(0,getHeight(myPic)):
+      secretPx = getPixel(secretPic,x,y)
+      myPx = getPixel(myPic,x,y)
+      if (distance(getColor(secretPx),black) < 50.0):
+        # It's a message pixel! Make red ODD in myPic
+        setRed(myPx, getRed(myPx)+1)
+  # The message in secretePic is now encoded in myPic. 
+
+# Takes as input a picture encodedPic with a secret picture 
+# hidden inside of it. It returns a new picture which is
+# the secret picture hidden inside encodedPic.    
+def decode(encodedPic):
+  # creates a white picture that is the 
+  # same size as encodedPic
+  w = getWidth(encodedPic)
+  h = getHeight(encodedPic)
+  secretPic = makeEmptyPicture(w, h)
+  
+  # for each pixel in encodedPic that has an odd red
+  # value, change the pixel at the same location in
+  # secretPic to black to reveal the message!
+  for p in getPixels(encodedPic):
+    if (getRed(p) % 2) == 1:
+      p2=getPixel(secretPic, getX(p), getY(p))
+      setColor(p2,black)
+  return secretPic
+
+# function definitions above
+###############################
+# test code below
+
+hiddenMsgPic = makePicture("motorWithMsg.png")
+decodeMsg = decode(hiddenMsgPic)
+writePictureTo(decodeMsg, "decodedMotor Pic.png")
